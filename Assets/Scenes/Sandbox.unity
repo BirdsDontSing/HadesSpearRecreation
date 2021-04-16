@@ -260,6 +260,7 @@ GameObject:
   - component: {fileID: 293392370}
   - component: {fileID: 293392372}
   - component: {fileID: 293392371}
+  - component: {fileID: 293392373}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -333,6 +334,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!95 &293392373
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293392368}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: af94f72c07d6ce049a7cc78475f9aaff, type: 3}
+  m_Controller: {fileID: 9100000, guid: e739ed491c879414a9d9d30f386d46b6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,5 +885,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: e739ed491c879414a9d9d30f386d46b6, type: 2}
+    - target: {fileID: 5866666021909216657, guid: af94f72c07d6ce049a7cc78475f9aaff,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af94f72c07d6ce049a7cc78475f9aaff, type: 3}

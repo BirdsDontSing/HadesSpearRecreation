@@ -47,17 +47,20 @@ public class PlayerMovement : MonoBehaviour
     {
         float x = move.x; //store move value into variables
         float y = move.y;
-        //anim.SetFloat("BlendX", move.x);
-        //anim.SetFloat("BlendY", move.y);
+        
 
         Vector3 m = transform.right * x + transform.forward * y; //use move value to create the (m)ovement
 
         if (x != 0 && y != 0) //check to see if the player is actively inputting the move command
         {
             isMoving = true;
+            anim.SetFloat("BlendX", x % 1);
+            anim.SetFloat("BlendY", y % 1);
         } else
         {
             isMoving = false;
+            anim.SetFloat("BlendX", 0);
+            anim.SetFloat("BlendY", 0);
         }
 
         if (isMoving) //if the movement input is being done, then the player will move (done to allow the player to aim freely when not moving)
