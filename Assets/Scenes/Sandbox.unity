@@ -296,9 +296,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 293392371}
-  playerBody: {fileID: 293392369}
-  speed: 12
-  turnSpeed: 3
+  playerModel: {fileID: 901222443}
+  speed: 15
+  turnSpeed: 2
 --- !u!143 &293392371
 CharacterController:
   m_ObjectHideFlags: 0

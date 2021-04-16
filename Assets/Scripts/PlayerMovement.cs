@@ -8,8 +8,10 @@ public class PlayerMovement : MonoBehaviour
 
     PlayerControls controls;
 
+    Animator anim;
+
     public CharacterController controller;
-    public Transform playerBody;
+    public Transform playerModel;
 
     public float speed = 12f;
     public float turnSpeed = 3f;
@@ -17,8 +19,11 @@ public class PlayerMovement : MonoBehaviour
     Vector2 move;
     Vector2 rotate;
 
+    bool isMoving;
+
     private void Awake()
     {
+        //initialize player controls
         controls = new PlayerControls();
 
         controls.Gameplay.Attack.performed += ctx => Grow(); //change to attack later
@@ -28,6 +33,9 @@ public class PlayerMovement : MonoBehaviour
 
         controls.Gameplay.Rotate.performed += ctx => rotate = ctx.ReadValue<Vector2>(); //get input from right stick for rotation
         controls.Gameplay.Rotate.canceled += ctx => rotate = Vector2.zero;
+
+        //get components needed
+        anim = GetComponent<Animator>();
     }
 
     void Grow()
@@ -37,14 +45,33 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        //Vector3 m = new Vector3(move.x, 0, move.y);
+        float x = move.x; //store move value into variables
+        float y = move.y;
+        //anim.SetFloat("BlendX", move.x);
+        //anim.SetFloat("BlendY", move.y);
 
-        Vector3 m = transform.right * move.x + transform.forward * move.y;
+        Vector3 m = transform.right * x + transform.forward * y; //use move value to create the (m)ovement
 
-        controller.Move(m * speed * Time.deltaTime);
+        if (x != 0 && y != 0) //check to see if the player is actively inputting the move command
+        {
+            isMoving = true;
+        } else
+        {
+            isMoving = false;
+        }
+
+        if (isMoving) //if the movement input is being done, then the player will move (done to allow the player to aim freely when not moving)
+        {
+            controller.Move(m * speed * Time.deltaTime);
+            playerModel.rotation = Quaternion.Slerp(playerModel.rotation, Quaternion.LookRotation(m), 0.15F);
+            Debug.Log("I'm moving!");
+        } else
+        {
+            Debug.Log("Not moving!");
+        }
 
         Vector2 r = new Vector2(0, rotate.x) * turnSpeed; //only the x is needed
-        playerBody.Rotate(r); //rotate the player's body specifically, based off turn speed
+        playerModel.Rotate(r); //rotate the player's body specifically, based off turn speed
     }
 
     void OnEnable()
