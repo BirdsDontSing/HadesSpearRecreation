@@ -73,8 +73,8 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Not moving!");
         }
 
-        Vector2 r = new Vector2(0, rotate.x) * turnSpeed; //only the x is needed
-        playerModel.Rotate(r); //rotate the player's body specifically, based off turn speed
+        //Vector2 r = new Vector2(0, rotate.x) * turnSpeed; //only the x is needed
+        //playerModel.Rotate(r); //rotate the player's body specifically, based off turn speed
     }
 
     void OnEnable()
