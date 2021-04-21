@@ -19,14 +19,19 @@ public class PlayerMovement : MonoBehaviour
     Vector2 move;
     Vector2 rotate;
 
+    Vector3 m;
+
+    Quaternion playerRotation;
+
     bool isMoving;
+    bool isMobile;
 
     private void Awake()
     {
         //initialize player controls
         controls = new PlayerControls();
 
-        controls.Gameplay.Attack.performed += ctx => Grow(); //change to attack later
+        controls.Gameplay.Attack.performed += ctx => BasicStrike(); //change to attack later
 
         controls.Gameplay.Move.performed += ctx => move = ctx.ReadValue<Vector2>(); //get input from left stick for movement
         controls.Gameplay.Move.canceled += ctx => move = Vector2.zero;
@@ -36,20 +41,26 @@ public class PlayerMovement : MonoBehaviour
 
         //get components needed
         anim = GetComponent<Animator>();
+
+        //make sure player is mobile
+        isMobile = true;
     }
 
-    void Grow()
+    void BasicStrike()
     {
-        transform.localScale *= 1.1f;
+        HitboxScript hitboxScript = FindObjectOfType<HitboxScript>();
+
+        anim.SetTrigger("Attack");
+
+        hitboxScript.Attack();
     }
 
     private void Update()
     {
         float x = move.x; //store move value into variables
         float y = move.y;
-        
 
-        Vector3 m = transform.right * x + transform.forward * y; //use move value to create the (m)ovement
+        m = transform.right * x + transform.forward * y; //use move value to create the (m)ovement
 
         if (x != 0 && y != 0) //check to see if the player is actively inputting the move command
         {
@@ -63,10 +74,13 @@ public class PlayerMovement : MonoBehaviour
             anim.SetFloat("BlendY", 0);
         }
 
-        if (isMoving) //if the movement input is being done, then the player will move (done to allow the player to aim freely when not moving)
+        if (isMoving && isMobile) //if the movement input is being done, then the player will move (done to allow the player to aim freely when not moving); also checks if player is mobile
         {
             controller.Move(m * speed * Time.deltaTime);
             playerModel.rotation = Quaternion.Slerp(playerModel.rotation, Quaternion.LookRotation(m), 0.15F);
+
+            playerRotation = playerModel.rotation; //store the player's rotation so it can be read by other scripts
+
             Debug.Log("I'm moving!");
         } else
         {
@@ -85,5 +99,25 @@ public class PlayerMovement : MonoBehaviour
     void OnDisable()
     {
         controls.Gameplay.Disable();
+    }
+
+    public Quaternion returnPlayerRotation()
+    {
+        return playerRotation;
+    }
+
+    public Vector3 returnPlayerM()
+    {
+        return m;
+    }
+
+    public void setMobility(bool b)
+    {
+        isMobile = b;
+    }
+
+    public bool returnMobility()
+    {
+        return isMobile;
     }
 }
