@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 12f;
     public float turnSpeed = 3f;
 
+    float chargeAttackTimer;
+
     Vector2 move;
     Vector2 rotate;
 
@@ -25,13 +28,19 @@ public class PlayerMovement : MonoBehaviour
 
     bool isMoving;
     bool isMobile;
+    bool attackHeld = false;
+    bool attackInitiated = false;
 
     private void Awake()
     {
         //initialize player controls
         controls = new PlayerControls();
 
-        controls.Gameplay.Attack.performed += ctx => BasicStrike(); //change to attack later
+        controls.Gameplay.Attack.performed += ctx => attackHeld = true; //flag attack as held
+        controls.Gameplay.Attack.canceled += ctx => attackHeld = false; //flag attack as no longer held
+
+        controls.Gameplay.Attack.performed += ctx => attackInitiated = true; //flag attack as initiated
+        //controls.Gameplay.Attack.canceled += ctx => attackInitiated = false; //change to attack later
 
         controls.Gameplay.Move.performed += ctx => move = ctx.ReadValue<Vector2>(); //get input from left stick for movement
         controls.Gameplay.Move.canceled += ctx => move = Vector2.zero;
@@ -44,15 +53,31 @@ public class PlayerMovement : MonoBehaviour
 
         //make sure player is mobile
         isMobile = true;
+
+        //set timer to zero
+        chargeAttackTimer = 0;
     }
 
     void BasicStrike()
     {
         HitboxScript hitboxScript = FindObjectOfType<HitboxScript>();
 
-        anim.SetTrigger("Attack");
+        anim.SetTrigger("BasicAttack"); //attack animation
 
-        hitboxScript.Attack();
+        hitboxScript.Attack(false); //generates the hitbox
+
+        attackInitiated = false;
+    }
+
+    void ChargedStrike()
+    {
+        HitboxScript hitboxScript = FindObjectOfType<HitboxScript>();
+
+        anim.SetTrigger("Charging"); //attack animation
+
+        hitboxScript.Attack(true); //generates the hitbox
+
+        attackInitiated = false;
     }
 
     private void Update()
@@ -61,6 +86,11 @@ public class PlayerMovement : MonoBehaviour
         float y = move.y;
 
         m = transform.right * x + transform.forward * y; //use move value to create the (m)ovement
+
+        if (attackInitiated)
+        {
+            Attack(attackHeld);
+        }
 
         if (x != 0 && y != 0) //check to see if the player is actively inputting the move command
         {
@@ -87,8 +117,43 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Not moving!");
         }
 
+        chargeTimer();
+
         //Vector2 r = new Vector2(0, rotate.x) * turnSpeed; //only the x is needed
         //playerModel.Rotate(r); //rotate the player's body specifically, based off turn speed
+    }
+
+    public void Attack(bool held)
+    {
+        Debug.Log("attacking");
+
+        if (held == true) //sees if button is being held down
+        {
+            if (chargeAttackTimer > 0.2)
+            {
+                anim.SetTrigger("Charging");
+            }
+            Debug.Log("piss");
+        }
+
+        if (held == false) //only run on release of the button
+        {
+
+            if (chargeAttackTimer < 1) //check to see if the attack is charged
+            {
+                BasicStrike();
+                Debug.Log("Not Charged!");
+            }
+            else
+            {
+                ChargedStrike();
+                Debug.Log("Charged!");
+            }
+
+            attackHeld = false;
+        }
+
+        //attackInitiated = false;
     }
 
     void OnEnable()
@@ -119,5 +184,19 @@ public class PlayerMovement : MonoBehaviour
     public bool returnMobility()
     {
         return isMobile;
+    }
+
+    
+
+    void chargeTimer() //update timer for holding down your charged attack
+    {
+        if (attackHeld == true)
+        {
+            chargeAttackTimer += Time.deltaTime;
+        }
+        else
+        {
+            chargeAttackTimer = 0;
+        }
     }
 }

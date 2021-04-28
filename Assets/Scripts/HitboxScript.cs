@@ -8,7 +8,8 @@ public class HitboxScript : MonoBehaviour
     Vector3 playerM;
 
     public Transform hitboxOrigin;
-    public GameObject hitbox;
+    public GameObject basicHitbox;
+    public GameObject chargedHitbox;
 
     bool isActive;
 
@@ -55,19 +56,33 @@ public class HitboxScript : MonoBehaviour
         return m;
     }
 
-    public void Attack()
+    public void Attack(bool charged)
     {
         if (!isActive)
         {
-            StartCoroutine(attackCoroutine());
+            StartCoroutine(attackCoroutine(charged));
         }
     }
 
-    IEnumerator attackCoroutine()
+    IEnumerator attackCoroutine(bool charged)
     {
         PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
 
-        hitbox.SetActive(true);
+        float delay = 0.1f;
+
+        if (charged)
+        {
+            delay *= 2;
+        }
+
+        if (charged)
+        {
+            chargedHitbox.SetActive(true);
+        } else
+        {
+            basicHitbox.SetActive(true);
+        }
+        
 
         isActive = true;
 
@@ -75,7 +90,14 @@ public class HitboxScript : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        hitbox.SetActive(false);
+        if (charged)
+        {
+            chargedHitbox.SetActive(false);
+        }
+        else
+        {
+            basicHitbox.SetActive(false);
+        }
 
         isActive = false;
 
