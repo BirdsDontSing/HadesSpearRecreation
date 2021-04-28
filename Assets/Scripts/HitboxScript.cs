@@ -13,6 +13,8 @@ public class HitboxScript : MonoBehaviour
 
     bool isActive;
 
+    int attackDamage = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,6 +56,16 @@ public class HitboxScript : MonoBehaviour
         Vector3 m = playerMovement.returnPlayerM();
 
         return m;
+    }
+
+    public int returnDamage()
+    {
+        return attackDamage;
+    }
+
+    public void setDamage(int damage)
+    {
+        attackDamage = damage;
     }
 
     public void Attack(bool charged)

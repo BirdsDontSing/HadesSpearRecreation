@@ -19,6 +19,12 @@ public class PlayerMovement : MonoBehaviour
 
     float chargeAttackTimer;
 
+    float comboAttackTimer;
+
+    int chargeLevel = 0;
+
+    int comboLevel = 0;
+
     Vector2 move;
     Vector2 rotate;
 
@@ -30,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     bool isMobile;
     bool attackHeld = false;
     bool attackInitiated = false;
+    bool firstAttack = true;
 
     private void Awake()
     {
@@ -40,7 +47,6 @@ public class PlayerMovement : MonoBehaviour
         controls.Gameplay.Attack.canceled += ctx => attackHeld = false; //flag attack as no longer held
 
         controls.Gameplay.Attack.performed += ctx => attackInitiated = true; //flag attack as initiated
-        //controls.Gameplay.Attack.canceled += ctx => attackInitiated = false; //change to attack later
 
         controls.Gameplay.Move.performed += ctx => move = ctx.ReadValue<Vector2>(); //get input from left stick for movement
         controls.Gameplay.Move.canceled += ctx => move = Vector2.zero;
@@ -62,6 +68,16 @@ public class PlayerMovement : MonoBehaviour
     {
         HitboxScript hitboxScript = FindObjectOfType<HitboxScript>();
 
+        if (comboLevel > 1)
+        {
+            hitboxScript.setDamage(30);
+        } else
+        {
+            hitboxScript.setDamage(25);
+        }
+
+        
+
         anim.SetTrigger("BasicAttack"); //attack animation
 
         hitboxScript.Attack(false); //generates the hitbox
@@ -72,6 +88,18 @@ public class PlayerMovement : MonoBehaviour
     void ChargedStrike()
     {
         HitboxScript hitboxScript = FindObjectOfType<HitboxScript>();
+
+        if (chargeLevel == 1)
+        {
+            hitboxScript.setDamage(30);
+        } else if (chargeLevel == 2)
+        {
+            hitboxScript.setDamage(50);
+        } else if (chargeLevel == 3)
+        {
+            hitboxScript.setDamage(100);
+        }
+        
 
         anim.SetTrigger("Charging"); //attack animation
 
@@ -117,10 +145,9 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Not moving!");
         }
 
-        chargeTimer();
+        updateChargeTimer();
 
-        //Vector2 r = new Vector2(0, rotate.x) * turnSpeed; //only the x is needed
-        //playerModel.Rotate(r); //rotate the player's body specifically, based off turn speed
+        updateComboTimer();
     }
 
     public void Attack(bool held)
@@ -129,9 +156,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (held == true) //sees if button is being held down
         {
-            if (chargeAttackTimer > 0.2)
+            if (chargeAttackTimer > 0.26)
             {
                 anim.SetTrigger("Charging");
+                isMobile = false;
             }
             Debug.Log("piss");
         }
@@ -139,13 +167,43 @@ public class PlayerMovement : MonoBehaviour
         if (held == false) //only run on release of the button
         {
 
-            if (chargeAttackTimer < 1) //check to see if the attack is charged
+            if (chargeAttackTimer < 0.26) //check to see if the attack is charged
             {
+                
+
+                if (comboLevel == 0)
+                {
+                    comboLevel = 1;
+                    firstAttack = false;
+                }
+
+                if (comboLevel >= 1 && comboAttackTimer <= 0.2 && firstAttack == false)
+                {
+                    comboLevel++;
+                }
+                if (comboLevel > 3 || comboAttackTimer > 0.2)
+                {
+                    comboLevel = 0;
+                    firstAttack = true;
+                }
+
                 BasicStrike();
+
                 Debug.Log("Not Charged!");
             }
             else
             {
+                if (chargeAttackTimer < 0.33)
+                {
+                    chargeLevel = 1;
+                } else if (chargeAttackTimer > 0.33 && chargeAttackTimer < 0.66)
+                {
+                    chargeLevel = 2;
+                } else if (chargeAttackTimer > 0.66)
+                {
+                    chargeLevel = 3;
+                }
+
                 ChargedStrike();
                 Debug.Log("Charged!");
             }
@@ -188,7 +246,7 @@ public class PlayerMovement : MonoBehaviour
 
     
 
-    void chargeTimer() //update timer for holding down your charged attack
+    void updateChargeTimer() //update timer for holding down your charged attack
     {
         if (attackHeld == true)
         {
@@ -197,6 +255,17 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             chargeAttackTimer = 0;
+        }
+    }
+
+    void updateComboTimer()
+    {
+        if (comboLevel > 0)
+        {
+            comboAttackTimer += Time.deltaTime;
+        } else
+        {
+            comboAttackTimer = 0;
         }
     }
 }

@@ -11,7 +11,9 @@ public class DummyScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Hitbox")
         {
-            health -= 25;
+            HitboxScript hitboxScript = FindObjectOfType<HitboxScript>();
+
+            health -= hitboxScript.returnDamage();
 
             Debug.Log("Dummy is at " + health + " health");
         }
