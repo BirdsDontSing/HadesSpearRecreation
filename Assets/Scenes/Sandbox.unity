@@ -417,6 +417,7 @@ GameObject:
   - component: {fileID: 293392373}
   - component: {fileID: 293392374}
   - component: {fileID: 293392375}
+  - component: {fileID: 293392376}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -549,6 +550,22 @@ MonoBehaviour:
   hitboxOrigin: {fileID: 852767251}
   basicHitbox: {fileID: 1283894932}
   chargedHitbox: {fileID: 996460319}
+--- !u!114 &293392376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293392368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2161e9decc69ba44b6f8526cc4d71f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activatedMaterial: {fileID: 2100000, guid: 8afb4cb568e2a4743915b4122c6ff8bc, type: 2}
+  baseMaterial: {fileID: -4565884009001823619, guid: b10d59cf669b74b4394fea449199fa5d,
+    type: 3}
+  playerSurface: {fileID: 2070649961}
 --- !u!1 &310977896
 GameObject:
   m_ObjectHideFlags: 0
@@ -1602,3 +1619,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af94f72c07d6ce049a7cc78475f9aaff, type: 3}
+--- !u!1 &2070649961 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -3090848061168836670, guid: af94f72c07d6ce049a7cc78475f9aaff,
+    type: 3}
+  m_PrefabInstance: {fileID: 2064255730}
+  m_PrefabAsset: {fileID: 0}
