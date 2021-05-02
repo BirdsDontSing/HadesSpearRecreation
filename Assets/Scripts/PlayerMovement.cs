@@ -101,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
         }
         
 
-        anim.SetTrigger("Charging"); //attack animation
+        anim.SetTrigger("SpinAttack"); //attack animation
 
         hitboxScript.Attack(true); //generates the hitbox
 
@@ -170,22 +170,20 @@ public class PlayerMovement : MonoBehaviour
             if (chargeAttackTimer < 0.26) //check to see if the attack is charged
             {
                 
-
                 if (comboLevel == 0)
                 {
-                    comboLevel = 1;
                     firstAttack = false;
                 }
 
-                if (comboLevel >= 1 && comboAttackTimer <= 0.2 && firstAttack == false)
-                {
-                    comboLevel++;
-                }
-                if (comboLevel > 3 || comboAttackTimer > 0.2)
+                if (comboLevel > 3 || comboAttackTimer > 0.35)
                 {
                     comboLevel = 0;
                     firstAttack = true;
+                } else if (comboAttackTimer <= 0.35 && firstAttack == false)
+                {
+                    comboLevel++;
                 }
+                
 
                 BasicStrike();
 
@@ -267,5 +265,10 @@ public class PlayerMovement : MonoBehaviour
         {
             comboAttackTimer = 0;
         }
+    }
+
+    public float returnChargeTimer()
+    {
+        return chargeAttackTimer;
     }
 }

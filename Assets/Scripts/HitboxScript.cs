@@ -84,7 +84,7 @@ public class HitboxScript : MonoBehaviour
 
         if (charged)
         {
-            delay *= 2;
+            delay *= 4;
         }
 
         if (charged)
