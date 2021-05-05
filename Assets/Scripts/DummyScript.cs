@@ -13,7 +13,11 @@ public class DummyScript : MonoBehaviour
         {
             HitboxScript hitboxScript = FindObjectOfType<HitboxScript>();
 
-            health -= hitboxScript.returnDamage();
+            int damage = hitboxScript.returnDamage();
+
+            health -= damage;
+
+            FloatingTextController.CreateFloatingText(damage.ToString(), transform);
 
             Debug.Log("Dummy is at " + health + " health");
         }

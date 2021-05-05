@@ -8,6 +8,8 @@ public class LevelController : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
+
+        FloatingTextController.InitializeFloatingText();
     }
 
     // Update is called once per frame
