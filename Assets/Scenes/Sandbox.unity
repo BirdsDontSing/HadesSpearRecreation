@@ -524,7 +524,7 @@ MonoBehaviour:
   controller: {fileID: 293392371}
   playerModel: {fileID: 901222443}
   speed: 12
-  turnSpeed: 2
+  turnSpeed: 3
 --- !u!143 &293392371
 CharacterController:
   m_ObjectHideFlags: 0
