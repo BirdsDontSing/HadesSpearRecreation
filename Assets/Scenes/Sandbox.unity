@@ -478,11 +478,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 293392369}
-  - component: {fileID: 293392370}
   - component: {fileID: 293392372}
   - component: {fileID: 293392371}
   - component: {fileID: 293392373}
   - component: {fileID: 293392374}
+  - component: {fileID: 293392370}
   - component: {fileID: 293392375}
   - component: {fileID: 293392376}
   m_Layer: 0

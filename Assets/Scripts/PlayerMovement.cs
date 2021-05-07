@@ -135,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
             anim.SetFloat("BlendY", 0);
         }
 
-        if (isMoving && isMobile) //if the movement input is being done, then the player will move (done to allow the player to aim freely when not moving); also checks if player is mobile
+        if (isMoving && isMobile) //if the movement input is being done, then the player will move; also checks if player is mobile
         {
             controller.Move(m * speed * Time.deltaTime);
             playerModel.rotation = Quaternion.Slerp(playerModel.rotation, Quaternion.LookRotation(m), 0.15F);
@@ -171,13 +171,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (chargeAttackTimer < 0.26) //check to see if the attack is charged
             {
-                
-                /*if (comboLevel == 0)
-                {
-                    firstAttack = false;
-                }*/
-
-                if (comboAttackTimer <= 0.35) //&& firstAttack == false && comboLevel < 4)
+                if (comboAttackTimer <= 0.35)
                 {
                     comboLevel++;
                     Debug.Log("Combo is " + comboLevel);
@@ -185,9 +179,7 @@ public class PlayerMovement : MonoBehaviour
                 if (comboLevel > 3)
                 {
                     comboLevel = 0;
-                    //firstAttack = true;
                 }
-
 
                 BasicStrike();
 

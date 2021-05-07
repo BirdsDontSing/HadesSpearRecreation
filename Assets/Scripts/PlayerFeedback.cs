@@ -22,31 +22,31 @@ public class PlayerFeedback : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        getChargeTimer();
+        getChargeTimer(); //find the amount of charge
         
-        if (currentChargeTimer > 0)
+        if (currentChargeTimer > 0) //if there is any charge whatsoever
         {
-            if (!chargeStarted)
+            if (!chargeStarted) //this flag is in place to ensure the sound only starts once
             {
                 AudioHelper.PlayClip2D(chargeSFX, 0.6f);
                 chargeStarted = true;
             }
             
-            if (currentChargeTimer >= 0.33f && firstFlash == false)
+            if (currentChargeTimer >= 0.33f && firstFlash == false) //the bool ensures this only triggers once
             {
                 StartCoroutine(flashCoroutine());
                 firstFlash = true;
                 AudioHelper.PlayClip2D(chargeTickSFX, 0.7f);
             }
-            if (currentChargeTimer >= 0.66f && secondFlash == false)
+            if (currentChargeTimer >= 0.66f && secondFlash == false) //similar to previous, though louder and adds the pop up text
             {
                 StartCoroutine(flashCoroutine());
                 secondFlash = true;
                 AudioHelper.PlayClip2D(chargeTickSFX, 0.9f);
                 FloatingTextController.CreateFloatingText("Max!", transform);
             }
-        } else
-        {
+        } else //when no longer charging, resets everything to zero
+        { 
             firstFlash = false;
             secondFlash = false;
             chargeStarted = false;
