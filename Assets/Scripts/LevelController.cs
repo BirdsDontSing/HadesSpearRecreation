@@ -13,7 +13,7 @@ public class LevelController : MonoBehaviour
 
         FloatingTextController.InitializeFloatingText();
 
-        AudioHelper.PlayClip2D(levelMusic, 0.4f);
+        AudioHelper.PlayClip2D(levelMusic, 0.2f);
     }
 
     // Update is called once per frame
