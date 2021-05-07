@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     int chargeLevel = 0;
 
     int comboLevel = 0;
+    int prevCombo;
 
     Vector2 move;
     Vector2 rotate;
@@ -67,6 +68,8 @@ public class PlayerMovement : MonoBehaviour
     void BasicStrike()
     {
         HitboxScript hitboxScript = FindObjectOfType<HitboxScript>();
+
+        Debug.Log("Attacking with a " + comboLevel + " Combo!");
 
         if (comboLevel > 1)
         {
@@ -161,7 +164,6 @@ public class PlayerMovement : MonoBehaviour
                 anim.SetTrigger("Charging");
                 isMobile = false;
             }
-            Debug.Log("piss");
         }
 
         if (held == false) //only run on release of the button
@@ -170,20 +172,22 @@ public class PlayerMovement : MonoBehaviour
             if (chargeAttackTimer < 0.26) //check to see if the attack is charged
             {
                 
-                if (comboLevel == 0)
+                /*if (comboLevel == 0)
                 {
                     firstAttack = false;
-                }
+                }*/
 
-                if (comboLevel > 3 || comboAttackTimer > 0.35)
-                {
-                    comboLevel = 0;
-                    firstAttack = true;
-                } else if (comboAttackTimer <= 0.35 && firstAttack == false)
+                if (comboAttackTimer <= 0.35) //&& firstAttack == false && comboLevel < 4)
                 {
                     comboLevel++;
+                    Debug.Log("Combo is " + comboLevel);
                 }
-                
+                if (comboLevel > 3)
+                {
+                    comboLevel = 0;
+                    //firstAttack = true;
+                }
+
 
                 BasicStrike();
 
@@ -258,6 +262,12 @@ public class PlayerMovement : MonoBehaviour
 
     void updateComboTimer()
     {
+
+        if (comboLevel > prevCombo)
+        {
+            comboAttackTimer -= 0.35f;
+        }
+
         if (comboLevel > 0)
         {
             comboAttackTimer += Time.deltaTime;
@@ -265,6 +275,14 @@ public class PlayerMovement : MonoBehaviour
         {
             comboAttackTimer = 0;
         }
+
+        if (comboAttackTimer >= 0.35f)
+        {
+            comboAttackTimer = 0;
+            comboLevel = 0;
+        }
+
+        prevCombo = comboLevel;
     }
 
     public float returnChargeTimer()

@@ -273,6 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1794eda479aabc844b3e7efe72be7b0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelMusic: {fileID: 8300000, guid: facad9ee1a4d36c448e1f9bd435ba814, type: 3}
 --- !u!4 &123525758
 Transform:
   m_ObjectHideFlags: 0
@@ -616,6 +617,8 @@ MonoBehaviour:
   hitboxOrigin: {fileID: 852767251}
   basicHitbox: {fileID: 1283894932}
   chargedHitbox: {fileID: 996460319}
+  stabSFX: {fileID: 8300000, guid: e22c5b12e8cbbbb479f015e183340f75, type: 3}
+  swooshSFX: {fileID: 8300000, guid: 3f36cc012bcab6d49a47db0adafb50e8, type: 3}
 --- !u!114 &293392376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -632,6 +635,8 @@ MonoBehaviour:
   baseMaterial: {fileID: -4565884009001823619, guid: b10d59cf669b74b4394fea449199fa5d,
     type: 3}
   playerSurface: {fileID: 2070649961}
+  chargeSFX: {fileID: 8300000, guid: 439b1f7ff7e7dec45804a97368456789, type: 3}
+  chargeTickSFX: {fileID: 8300000, guid: 50456e21b3073b14fb4d404f342d4044, type: 3}
 --- !u!1 &310977896
 GameObject:
   m_ObjectHideFlags: 0

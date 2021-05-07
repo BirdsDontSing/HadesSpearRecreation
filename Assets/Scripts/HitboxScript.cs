@@ -11,6 +11,9 @@ public class HitboxScript : MonoBehaviour
     public GameObject basicHitbox;
     public GameObject chargedHitbox;
 
+    [SerializeField] AudioClip stabSFX;
+    [SerializeField] AudioClip swooshSFX;
+
     bool isActive;
 
     int attackDamage = 0;
@@ -90,9 +93,11 @@ public class HitboxScript : MonoBehaviour
         if (charged)
         {
             chargedHitbox.SetActive(true);
+            AudioHelper.PlayClip2D(swooshSFX, 0.7f);
         } else
         {
             basicHitbox.SetActive(true);
+            AudioHelper.PlayClip2D(stabSFX, 0.7f);
         }
         
 

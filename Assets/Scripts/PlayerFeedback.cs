@@ -8,17 +8,16 @@ public class PlayerFeedback : MonoBehaviour
     float currentChargeTimer;
     bool firstFlash = false;
     bool secondFlash = false;
+    bool chargeStarted = false;
 
+    private GameObject sfxClip;
 
     [SerializeField] Material activatedMaterial;
     [SerializeField] Material baseMaterial;
     [SerializeField] GameObject playerSurface;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] AudioClip chargeSFX;
+    [SerializeField] AudioClip chargeTickSFX;
 
     // Update is called once per frame
     void Update()
@@ -27,20 +26,32 @@ public class PlayerFeedback : MonoBehaviour
         
         if (currentChargeTimer > 0)
         {
+            if (!chargeStarted)
+            {
+                AudioHelper.PlayClip2D(chargeSFX, 0.6f);
+                chargeStarted = true;
+            }
+            
             if (currentChargeTimer >= 0.33f && firstFlash == false)
             {
                 StartCoroutine(flashCoroutine());
                 firstFlash = true;
+                AudioHelper.PlayClip2D(chargeTickSFX, 0.7f);
             }
             if (currentChargeTimer >= 0.66f && secondFlash == false)
             {
                 StartCoroutine(flashCoroutine());
                 secondFlash = true;
+                AudioHelper.PlayClip2D(chargeTickSFX, 0.9f);
+                FloatingTextController.CreateFloatingText("Max!", transform);
             }
         } else
         {
             firstFlash = false;
             secondFlash = false;
+            chargeStarted = false;
+            sfxClip = GameObject.Find("2D Audio ChargingSoundEffect (UnityEngine.AudioClip)");
+            Destroy(sfxClip);
         }
     }
 
